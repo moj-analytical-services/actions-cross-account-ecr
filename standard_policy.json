@@ -6,8 +6,8 @@
             "Effect": "Allow",
             "Principal": {
                 "AWS": [
-                    "arn:aws:iam::593291632749:role/airflow-dev-node-instance-role",
-                    "arn:aws:iam::593291632749:role/airflow-prod-node-instance-role"
+                    "arn:aws:iam::REPLACE_ME:role/airflow-dev-node-instance-role",
+                    "arn:aws:iam::REPLACE_ME:role/airflow-prod-node-instance-role"
                 ]
             },
             "Action": [

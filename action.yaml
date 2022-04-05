@@ -4,13 +4,20 @@ inputs:
   role-to-assume:
     description: The ARN of the role to assume
     required: true
+  account-id:
+    description: The ID of the account you wish to grant permissions to
+    required: true
 runs:
   using: composite
   steps:
-    - name: Check out repository
+    - name: Check out current repository
+      uses: actions/checkout@v2
+    - name: Check out cross-account repository
       uses: actions/checkout@v2
       with:
-        fetch-depth: 1
+        repository: "moj-analytical-services/actions-cross-account-ecr"
+        ref: main
+        path: "actions-cross-account-ecr"
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -21,15 +28,26 @@ runs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
     - name: Check ECR Repository Exists
       env:
         ECR_REPOSITORY: ${{ github.event.repository.name }}
       shell: bash
       run: |
         aws ecr describe-repositories --repository-names $ECR_REPOSITORY
+    - name: Check ECR Repository Exists
+      env:
+        ACCOUNT_ID: ${{ inputs.account-id }}
+      shell: bash
+      run: |
+        echo $(ls)
+        python ./actions-cross-account-ecr/generate_policy.py
     - name: Add permissions to repository
       env:
         ECR_REPOSITORY: ${{ github.event.repository.name }}
       shell: bash
       run: |
-        aws ecr set-repository-policy --repository-name $ECR_REPOSITORY --policy-text file://standard_policy.json
+        aws ecr set-repository-policy --repository-name $ECR_REPOSITORY --policy-text file://./actions-cross-account-ecr/generated_policy.json

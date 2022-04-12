@@ -4,9 +4,9 @@ inputs:
   role-to-assume:
     description: The ARN of the role to assume
     required: true
-  account-id:
-    description: The ID of the account you wish to grant permissions to
-    required: true
+  policy-json:
+    description: The path to the policy JSON you wish to apply
+    required: false
 runs:
   using: composite
   steps:
@@ -40,14 +40,13 @@ runs:
         aws ecr describe-repositories --repository-names $ECR_REPOSITORY
     - name: Check ECR Repository Exists
       env:
-        ACCOUNT_ID: ${{ inputs.account-id }}
+        POLICY_JSON: ${{ inputs.policy-json }}
       shell: bash
       run: |
-        echo $(ls)
         python ./actions-cross-account-ecr/generate_policy.py
     - name: Add permissions to repository
       env:
         ECR_REPOSITORY: ${{ github.event.repository.name }}
       shell: bash
       run: |
-        aws ecr set-repository-policy --repository-name $ECR_REPOSITORY --policy-text file://./actions-cross-account-ecr/generated_policy.json
+        aws ecr set-repository-policy --repository-name $ECR_REPOSITORY --policy-text file://./actions-cross-account-ecr/final_policy.json

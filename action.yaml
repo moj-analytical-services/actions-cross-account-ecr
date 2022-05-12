@@ -37,7 +37,7 @@ runs:
         ECR_REPOSITORY: ${{ github.event.repository.name }}
       shell: bash
       run: |
-        aws ecr describe-repositories --repository-names $ECR_REPOSITORY
+        aws ecr describe-repositories --repository-names ${ECR_REPOSITORY,,}
     - name: Check ECR Repository Exists
       env:
         POLICY_JSON: ${{ inputs.policy-json }}
@@ -49,4 +49,4 @@ runs:
         ECR_REPOSITORY: ${{ github.event.repository.name }}
       shell: bash
       run: |
-        aws ecr set-repository-policy --repository-name $ECR_REPOSITORY --policy-text file://./actions-cross-account-ecr/final_policy.json
+        aws ecr set-repository-policy --repository-name ${ECR_REPOSITORY,,} --policy-text file://./actions-cross-account-ecr/final_policy.json

@@ -12,7 +12,7 @@ account, and will be inherited from the template unless specified.
 ```yaml
 steps:
   - name: Add cross-account permissions to an image on ECR
-    uses: moj-analytical-services/add-ecr-permissions@v1
+    uses: moj-analytical-services/actions-cross-account-ecr@v1
     with:
       role-to-assume: arn:aws:iam::123456789012:role/my-role
       account-id: 345678901234

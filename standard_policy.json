@@ -8,7 +8,10 @@
                 "AWS": [
                     "arn:aws:iam::593291632749:role/airflow-dev-node-instance-role",
                     "arn:aws:iam::593291632749:role/airflow-prod-node-instance-role",
-                    "arn:aws:iam::593291632749:role/airflow-sandpit-node-instance-role"
+                    "arn:aws:iam::593291632749:role/airflow-sandpit-node-instance-role",
+                    "arn:aws:iam::381491960855:root",
+                    "arn:aws:iam::767397661611:root",
+                    "arn:aws:iam::992382429243:root"
                 ]
             },
             "Action": [
